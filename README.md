@@ -552,7 +552,7 @@ O vídeo deve apresentar:
 ## 19. Repositório
 
 **GitHub:**  
-> COLOCAR_LINK_DO_GITHUB_AQUI
+https://github.com/camillacastro-stack/ConectaStore/
 
 ---
 
