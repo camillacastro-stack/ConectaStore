@@ -2,6 +2,7 @@ use ConectaStore::benchmark::executar_benchmark;
 use ConectaStore::graph::Grafo;
 use ConectaStore::models::{Cliente, Produto};
 use ConectaStore::recommendation::recomendar_produtos;
+use ConectaStore::web::iniciar_servidor;
 
 fn main() {
     let clientes = vec![
@@ -53,25 +54,30 @@ fn main() {
     }
 
     // Histórico de compras
-    grafo.adicionar_compra(1, 101); // Camilla comprou Notebook
-    grafo.adicionar_compra(1, 102); // Camilla comprou Mouse
 
-    grafo.adicionar_compra(2, 101); // João comprou Notebook
-    grafo.adicionar_compra(2, 103); // João comprou Teclado
+    grafo.adicionar_compra(1, 101);
+    grafo.adicionar_compra(1, 102);
 
-    grafo.adicionar_compra(3, 103); // Maria comprou Teclado
-    grafo.adicionar_compra(3, 104); // Maria comprou Monitor
+    grafo.adicionar_compra(2, 101);
+    grafo.adicionar_compra(2, 103);
 
-    let recomendacoes = recomendar_produtos(&grafo, 1, 5);
+    grafo.adicionar_compra(3, 103);
+    grafo.adicionar_compra(3, 104);
+
+    // Demonstração da recomendação
+
+    let recomendacoes =
+        recomendar_produtos(&grafo, 1, 5);
 
     println!("=== CONECTASTORE ===");
     println!("Cliente: Camilla");
     println!();
-
     println!("Produtos recomendados:");
 
-    for produto_id in recomendacoes {
-        if let Some(produto) = produtos.iter().find(|p| p.id == produto_id) {
+    for produto_id in &recomendacoes {
+        if let Some(produto) =
+            produtos.iter().find(|p| p.id == *produto_id)
+        {
             println!(
                 "- {} | Categoria: {}",
                 produto.nome,
@@ -80,6 +86,15 @@ fn main() {
         }
     }
 
-    // Executa o benchmark
+    // Benchmark
+
     executar_benchmark();
+
+    // Interface visual
+
+    iniciar_servidor(
+        grafo,
+        clientes,
+        produtos,
+    );
 }
